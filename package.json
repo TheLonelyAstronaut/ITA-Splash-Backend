@@ -10,8 +10,9 @@
     "dist/"
   ],
   "scripts": {
-    "build": "npm run clean && npm run lint && tsc",
-    "start": "npm run build && node ./dist/server.js",
+    "build": "npm run clean && tsc",
+    "start": "node ./dist/server.js",
+    "postinstall": "npm run build",
     "start:dev": "node --inspect=5858 -r ts-node/register ./src/server.ts",
     "start:watch": "nodemon start:dev",
     "changelog": "conventional-changelog -p angular -u",
