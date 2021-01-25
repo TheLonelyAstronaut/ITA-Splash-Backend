@@ -20,8 +20,8 @@
     "clean:all": "npm run clean && (rm -r ./node_modules || true)",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prettier:check": "prettier --check \"**/*.{js,ts,jsx,tsx,css,md}\" --config .prettierrc",
-    "prettier:write": "prettier --write \"**/*.{js,ts,jsx,tsx,css,md}\" --config .prettierrc"
+    "prettier:check": "prettier --check \"**/*.{ts,md}\" --config .prettierrc",
+    "prettier:write": "prettier --write \"**/*.{ts,md}\" --config .prettierrc"
   },
   "devDependencies": {
     "@types/chai": "^4.1.6",
