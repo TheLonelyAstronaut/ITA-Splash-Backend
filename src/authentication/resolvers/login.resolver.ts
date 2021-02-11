@@ -9,12 +9,6 @@ export class LoginResolver {
 
 	@Mutation(() => LoginOutput)
 	async login(@Args('data') loginInput: LoginInput): Promise<LoginOutput> {
-		await this.authenticationService.authenticate(loginInput);
-
-		return {
-			...loginInput,
-			id: 1,
-			username: 'bruh',
-		};
+		return await this.authenticationService.authenticate(loginInput);
 	}
 }

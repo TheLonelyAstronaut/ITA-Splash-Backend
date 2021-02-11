@@ -2,20 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type LoginOutput {
-  id: Int!
-  username: String!
+type UserOutput {
+  id: Float!
   email: String!
+  username: String!
+}
+
+type LoginOutput {
+  accessToken: String!
 }
 
 type RegisterOutput {
-  id: Int!
-  username: String!
-  email: String!
+  accessToken: String!
 }
 
 type Query {
-  test: String!
+  getCurrentUser: UserOutput!
+  testAdminRole: String!
 }
 
 type Mutation {

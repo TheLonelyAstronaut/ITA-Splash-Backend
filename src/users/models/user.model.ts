@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { Role } from '../../utils/roles/roles.enum';
 
 @ObjectType()
 export class User {
@@ -18,4 +19,8 @@ export class User {
 	@Field()
 	@IsNotEmpty()
 	password: string;
+
+	@Field()
+	@IsNotEmpty()
+	role: Role;
 }
