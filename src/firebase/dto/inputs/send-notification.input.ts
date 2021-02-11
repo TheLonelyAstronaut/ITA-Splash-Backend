@@ -1,6 +1,6 @@
-import { NotificationReceiver, Notification } from '../../notifications.common-types';
+import admin from 'firebase-admin';
 
 export interface SendNotificationInput {
 	notification: Notification;
-	receivers: NotificationReceiver[];
+	receivers: string[];
 }
