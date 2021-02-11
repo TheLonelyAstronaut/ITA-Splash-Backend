@@ -1,3 +1,5 @@
 import { FileUpload } from 'graphql-upload';
 
-export type UploadFileInput = FileUpload;
+export interface UploadFileInput extends FileUpload {
+	path: string;
+}

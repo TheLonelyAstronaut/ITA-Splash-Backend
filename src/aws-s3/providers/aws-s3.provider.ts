@@ -23,7 +23,7 @@ export class AWSS3Provider {
 		const result = await this.S3Object.upload({
 			Bucket: process.env.AWS_BUCKET_NAME,
 			ACL: 'public-read',
-			Key: newName,
+			Key: `${data.path}/${newName}`,
 			Body: stream,
 			ContentType: data.mimetype,
 		}).promise();
