@@ -1,26 +1,24 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../../utils/roles/roles.enum';
+import { FCMToken } from '../../firebase/fcm-tokens/models/fcm-token.model';
 
-@ObjectType()
+@Entity()
 export class User {
-	@Field((type) => Int)
+	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Field()
-	@IsNotEmpty()
-	username: string;
-
-	@Field()
-	@IsNotEmpty()
-	@IsEmail()
+	@Column({ unique: true })
 	email: string;
 
-	@Field()
-	@IsNotEmpty()
+	@Column()
 	password: string;
 
-	@Field()
-	@IsNotEmpty()
+	@Column()
+	username: string;
+
+	@Column()
 	role: Role;
+
+	@OneToMany(() => FCMToken, (token) => token.user)
+	FCMTokens: FCMToken[];
 }

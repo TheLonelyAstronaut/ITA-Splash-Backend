@@ -1,8 +1,8 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { UserEntity } from '../models/user.entity';
+import { User } from '../models/user.model';
 
-@EntityRepository(UserEntity)
-export class UserRepository extends Repository<UserEntity> {
+@EntityRepository(User)
+export class UserRepository extends Repository<User> {
 	logMe() {
 		console.log('VADIM');
 	}

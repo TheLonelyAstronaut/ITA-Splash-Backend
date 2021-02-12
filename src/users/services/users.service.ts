@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../models/user.model';
+import { UserGraphQL } from '../models/user.graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '../repositories/user.repository';
-import { UserEntity } from '../models/user.entity';
+import { User } from '../models/user.model';
 import { cloneFields } from '../../utils/mappers';
 import { generateHash } from '../../utils/hasher';
 import { Role } from '../../utils/roles/roles.enum';
@@ -11,16 +11,17 @@ import { Role } from '../../utils/roles/roles.enum';
 export class UsersService {
 	constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) {}
 
-	async create(data: User): Promise<void> {
-		const userEntity = new UserEntity();
-		cloneFields<User, UserEntity>(data, userEntity);
+	async create(data: UserGraphQL): Promise<void> {
+		const userEntity = new User();
+		cloneFields<UserGraphQL, User>(data, userEntity);
 		userEntity.password = await generateHash(userEntity.password);
 		userEntity.role = Role.Admin;
+		userEntity.FCMTokens = [];
 
 		await this.userRepository.save(userEntity);
 	}
 
-	async findById(id: number): Promise<User> {
+	async findById(id: number): Promise<UserGraphQL> {
 		return await this.userRepository.findOneOrFail({
 			where: {
 				id,

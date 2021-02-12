@@ -11,4 +11,8 @@ export class LoginInput {
 	@Field()
 	@IsNotEmpty()
 	password: string;
+
+	@Field()
+	@IsNotEmpty()
+	FCMToken: string;
 }

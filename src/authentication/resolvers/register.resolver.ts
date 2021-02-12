@@ -4,7 +4,7 @@ import { RegisterInput } from '../dto/inputs/register.input';
 import { UsersService } from '../../users/services/users.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { convertTypes } from '../../utils/mappers';
-import { User } from '../../users/models/user.model';
+import { UserGraphQL } from '../../users/models/user.graphql';
 
 @Resolver()
 export class RegisterResolver {
@@ -15,7 +15,7 @@ export class RegisterResolver {
 
 	@Mutation(() => RegisterOutput)
 	async register(@Args('data') registerInput: RegisterInput): Promise<RegisterOutput> {
-		await this.usersService.create(convertTypes<RegisterInput, User>(registerInput));
+		await this.usersService.create(convertTypes<RegisterInput, UserGraphQL>(registerInput));
 		return await this.authenticationService.authenticate(registerInput);
 	}
 }

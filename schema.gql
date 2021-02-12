@@ -29,10 +29,12 @@ type Mutation {
 input LoginInput {
   email: String!
   password: String!
+  FCMToken: String!
 }
 
 input RegisterInput {
   username: String!
   email: String!
   password: String!
+  FCMToken: String!
 }

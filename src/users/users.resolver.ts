@@ -1,6 +1,6 @@
 import { Query, Resolver } from '@nestjs/graphql';
 import { UsersService } from './services/users.service';
-import { User } from './models/user.model';
+import { UserGraphQL } from './models/user.graphql';
 import { GqlAuthGuard } from '../security/guards/gql-auth-guard.guard';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from './decorators/current-user.decorator';
@@ -16,7 +16,7 @@ export class UsersResolver {
 
 	@Query(() => UserOutput)
 	@UseGuards(GqlAuthGuard)
-	getCurrentUser(@CurrentUser() user: User): Observable<UserOutput> {
+	getCurrentUser(@CurrentUser() user: UserGraphQL): Observable<UserOutput> {
 		return from(this.usersService.findById(user.id));
 	}
 

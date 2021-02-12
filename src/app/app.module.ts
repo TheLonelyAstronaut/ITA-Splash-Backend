@@ -3,8 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../users/users.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
-import { RolesGuard } from '../utils/roles/roles.guard';
-import { APP_GUARD } from '@nestjs/core';
+import { FCMTokensModule } from '../firebase/fcm-tokens/fcm-tokens.module';
 
 @Module({
 	imports: [
@@ -25,6 +24,7 @@ import { APP_GUARD } from '@nestjs/core';
 		}),
 		AuthenticationModule,
 		UsersModule,
+		FCMTokensModule,
 	],
 })
 export class AppModule {}

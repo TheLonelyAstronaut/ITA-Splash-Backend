@@ -15,4 +15,8 @@ export class RegisterInput {
 	@Field()
 	@IsNotEmpty()
 	password: string;
+
+	@Field()
+	@IsNotEmpty()
+	FCMToken: string;
 }

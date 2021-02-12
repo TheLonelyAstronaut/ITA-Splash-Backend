@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { Role } from './roles.enum';
 import { ROLES_KEY } from './roles.decorators';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User } from '../../users/models/user.model';
+import { UserGraphQL } from '../../users/models/user.graphql';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -18,7 +18,7 @@ export class RolesGuard implements CanActivate {
 			return true;
 		}
 
-		const { user }: { user: User } = ctx.getContext().req;
+		const { user }: { user: UserGraphQL } = ctx.getContext().req;
 
 		return requiredRoles.some((role) => user.role == role);
 	}
