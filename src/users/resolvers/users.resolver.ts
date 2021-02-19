@@ -1,13 +1,13 @@
 import { Query, Resolver } from '@nestjs/graphql';
-import { UsersService } from './services/users.service';
-import { UserGraphQL } from './models/user.graphql';
-import { GqlAuthGuard } from '../security/guards/gql-auth-guard.guard';
+import { UsersService } from '../services/users.service';
+import { UserGraphQL } from '../models/user.graphql';
+import { GqlAuthGuard } from '../../security/guards/gql-auth-guard.guard';
 import { UseGuards } from '@nestjs/common';
-import { CurrentUser } from './decorators/current-user.decorator';
-import { UserOutput } from './dto/outputs/user.output';
-import { Roles } from '../utils/roles/roles.decorators';
-import { Role } from '../utils/roles/roles.enum';
-import { RolesGuard } from '../utils/roles/roles.guard';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { UserOutput } from '../dto/outputs/user.output';
+import { Roles } from '../../utils/roles/roles.decorators';
+import { Role } from '../../utils/roles/roles.enum';
+import { RolesGuard } from '../../utils/roles/roles.guard';
 import { from, Observable } from 'rxjs';
 
 @Resolver()

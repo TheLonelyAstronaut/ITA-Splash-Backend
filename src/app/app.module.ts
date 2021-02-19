@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../users/users.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { FCMTokensModule } from '../firebase/fcm-tokens/fcm-tokens.module';
+import { TracksModule } from '../tracks/tracks.module';
 
 @Module({
 	imports: [
@@ -25,6 +26,7 @@ import { FCMTokensModule } from '../firebase/fcm-tokens/fcm-tokens.module';
 		AuthenticationModule,
 		UsersModule,
 		FCMTokensModule,
+		TracksModule,
 	],
 })
 export class AppModule {}

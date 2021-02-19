@@ -24,6 +24,7 @@ type Query {
 type Mutation {
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
+  addTrack: String!
 }
 
 input LoginInput {

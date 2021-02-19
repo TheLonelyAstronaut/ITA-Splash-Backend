@@ -28,4 +28,20 @@ export class UsersService {
 			},
 		});
 	}
+
+	async findByID(ids: number[]): Promise<UserGraphQL[]> {
+		return await this.userRepository.find({
+			where: {
+				id: ids,
+			},
+		});
+	}
+
+	async getSubscribers(artistID: number): Promise<User[]> {
+		const users = await this.userRepository.find({
+			relations: ['FCMTokens'],
+		});
+
+		return users.filter((user) => user.FCMTokens.length);
+	}
 }

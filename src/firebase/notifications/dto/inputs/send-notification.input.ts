@@ -1,6 +1,6 @@
 import admin from 'firebase-admin';
 
 export interface SendNotificationInput {
-	notification: Notification;
+	notification: admin.messaging.WebpushNotification;
 	receivers: string[];
 }
