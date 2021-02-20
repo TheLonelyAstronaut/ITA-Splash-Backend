@@ -16,15 +16,47 @@ type RegisterOutput {
   accessToken: String!
 }
 
+type TrackOutput {
+  id: Float!
+  title: String!
+  url: String!
+  artwork: String!
+  albumID: Float!
+  artistID: Float!
+}
+
+type ArtistOutput {
+  name: String!
+  image: String!
+  id: Float!
+  similarArtists: [ArtistOutput]!
+  albums: [Int!]!
+}
+
+type AlbumOutput {
+  name: String!
+  artwork: String!
+  id: Float!
+  tracks: [TrackOutput!]!
+}
+
 type Query {
   getCurrentUser: UserOutput!
   testAdminRole: String!
+  getArtist(data: GetArtistInput!): ArtistOutput!
+}
+
+input GetArtistInput {
+  id: Float!
 }
 
 type Mutation {
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
-  addTrack: String!
+  addTrack(data: AddTrackInput!): TrackOutput!
+  addArtist(data: AddArtistInput!): ArtistOutput!
+  addSimilarArtist(data: AddSimilarArtistInput!): ArtistOutput!
+  addAlbum(data: AddAlbumInput!): AlbumOutput!
 }
 
 input LoginInput {
@@ -38,4 +70,26 @@ input RegisterInput {
   email: String!
   password: String!
   FCMToken: String!
+}
+
+input AddTrackInput {
+  title: String!
+  url: String!
+}
+
+input AddArtistInput {
+  name: String!
+  image: String!
+}
+
+input AddSimilarArtistInput {
+  artistID: Float!
+  similarArtistID: Float!
+}
+
+input AddAlbumInput {
+  name: String!
+  image: String!
+  tracks: [Int!]!
+  artistID: Float!
 }

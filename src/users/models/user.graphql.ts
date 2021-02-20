@@ -1,11 +1,10 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { Role } from '../../utils/roles/roles.enum';
-import { FCMToken } from '../../firebase/fcm-tokens/models/fcm-token.model';
 
 @ObjectType()
 export class UserGraphQL {
-	@Field((type) => Int)
+	@Field(() => Int)
 	id: number;
 
 	@Field()

@@ -5,6 +5,8 @@ import { UsersModule } from '../users/users.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { FCMTokensModule } from '../firebase/fcm-tokens/fcm-tokens.module';
 import { TracksModule } from '../tracks/tracks.module';
+import { ArtistsModule } from '../artisits/artists.module';
+import { AlbumsModule } from '../albums/albums.module';
 
 @Module({
 	imports: [
@@ -27,6 +29,8 @@ import { TracksModule } from '../tracks/tracks.module';
 		UsersModule,
 		FCMTokensModule,
 		TracksModule,
+		ArtistsModule,
+		AlbumsModule,
 	],
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { TracksService } from '../services/tracks.service';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../../security/guards/gql-auth-guard.guard';
@@ -7,6 +7,8 @@ import { Roles } from '../../utils/roles/roles.decorators';
 import { Role } from '../../utils/roles/roles.enum';
 import { UsersService } from '../../users/services/users.service';
 import { NotificationsService } from '../../firebase/notifications/services/notifications.service';
+import { AddTrackInput } from '../dto/inputs/add-track.input';
+import { TrackOutput } from '../dto/outputs/track.output';
 
 @Resolver()
 export class TracksResolver {
@@ -16,12 +18,12 @@ export class TracksResolver {
 		private readonly notificationsService: NotificationsService
 	) {}
 
-	@Mutation(() => String)
+	@Mutation(() => TrackOutput)
 	@UseGuards(GqlAuthGuard, RolesGuard)
 	@Roles(Role.Admin)
-	async addTrack(): Promise<string> {
-		await this.tracksService.addTrack();
-		const users = await this.usersService.getSubscribers(1);
+	async addTrack(@Args('data') data: AddTrackInput): Promise<TrackOutput> {
+		return await this.tracksService.create(data);
+		/*const users = await this.usersService.getSubscribers(1);
 
 		const tokens: string[] = [];
 		users.forEach((user) => {
@@ -36,8 +38,6 @@ export class TracksResolver {
 				title: 'Test notification',
 				body: 'Just to check if it works',
 			},
-		});
-
-		return 'TEST';
+		});*/
 	}
 }
