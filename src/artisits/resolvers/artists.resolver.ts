@@ -18,10 +18,7 @@ export class ArtistsResolver {
 	@UseGuards(GqlAuthGuard, RolesGuard)
 	@Roles(Role.Admin)
 	async addArtist(@Args('data') artist: AddArtistInput): Promise<ArtistOutput> {
-		return {
-			...(await this.artistsService.create(artist)),
-			albums: [123],
-		};
+		return await this.artistsService.create(artist);
 	}
 
 	@Mutation(() => ArtistOutput)
@@ -33,9 +30,6 @@ export class ArtistsResolver {
 
 	@Query(() => ArtistOutput)
 	async getArtist(@Args('data') data: GetArtistInput): Promise<ArtistOutput> {
-		return {
-			...(await this.artistsService.findByID(data.id, true)),
-			albums: [123],
-		};
+		return await this.artistsService.findByID(data.id, true)
 	}
 }

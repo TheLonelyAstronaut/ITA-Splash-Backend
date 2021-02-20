@@ -17,11 +17,10 @@ export class TracksService {
 		return track;
 	}
 
-	async findByID(ids: number[]): Promise<Track[]> {
+	async findByID(ids: number[], includeNullable?: boolean): Promise<Track[]> {
 		return await this.tracksRepository.find({
-			where: {
-				id: ids,
-			},
+			where: ids.map(id => ({ id })),
+			relations: includeNullable ? ['album', 'album.artist'] : []
 		});
 	}
 }

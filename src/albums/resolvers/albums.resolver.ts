@@ -26,8 +26,10 @@ export class AlbumsResolver {
 	@Roles(Role.Admin)
 	async addAlbum(@Args('data') data: AddAlbumInput): Promise<AlbumOutput> {
 		const artist: Artist = await this.artistsService.findByID(data.artistID);
-		const tracks: Track[] = await this.tracksService.findByID(data.tracks);
+		const tracks: Track[] = await this.tracksService.findByID(data.tracks, true);
 		const album = await this.albumsService.create(artist, tracks, data);
+
+		console.log(album.tracks);
 
 		return {
 			...album,

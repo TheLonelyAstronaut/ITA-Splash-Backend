@@ -21,7 +21,7 @@ export class ArtistOutput {
 	@IsNotEmpty()
 	similarArtists: Artist[];
 
-	@Field(() => [Int])
+	@Field(() => [AlbumOutput])
 	@IsNotEmpty()
-	albums: number[];
+	albums: AlbumOutput[];
 }

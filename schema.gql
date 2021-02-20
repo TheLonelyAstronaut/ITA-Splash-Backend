@@ -25,19 +25,19 @@ type TrackOutput {
   artistID: Float!
 }
 
-type ArtistOutput {
-  name: String!
-  image: String!
-  id: Float!
-  similarArtists: [ArtistOutput]!
-  albums: [Int!]!
-}
-
 type AlbumOutput {
   name: String!
   artwork: String!
   id: Float!
   tracks: [TrackOutput!]!
+}
+
+type ArtistOutput {
+  name: String!
+  image: String!
+  id: Float!
+  similarArtists: [ArtistOutput]!
+  albums: [AlbumOutput!]!
 }
 
 type Query {
