@@ -1,0 +1,86 @@
+fragment TrackFragment on TrackOutput {
+  id
+  title
+  artwork
+  albumID
+  artistID
+}
+
+fragment AlbumFragment on AlbumOutput {
+  id
+  name
+  artwork
+  tracks {
+    ...TrackFragment
+  }
+}
+
+fragment ArtistFragment on ArtistOutput {
+  	id
+    image
+  	name
+  	albums {
+      ...AlbumFragment
+    }
+    similarArtists {
+      id
+      image
+      name
+    }
+}
+
+mutation login($data: LoginInput!){
+  login(data: $data) {
+    accessToken
+  }
+}
+
+query getCurrentUser{
+  getCurrentUser {
+    id
+    email
+    username
+  }
+}
+
+query testRoles {
+  testAdminRole
+}
+
+mutation register($data: RegisterInput!){
+  register(data:$data){
+    accessToken
+  }
+}
+
+mutation addTrack($addTrackData: AddTrackInput!){
+  addTrack(data: $addTrackData) {
+    id
+    url
+    title
+  }
+}
+
+mutation addAlbum($addAlbumData: AddAlbumInput!) {
+  addAlbum(data: $addAlbumData) {
+    ...AlbumFragment
+  }
+}
+
+mutation addArtist($addArtistData: AddArtistInput!) {
+  addArtist(data: $addArtistData) {
+    ...ArtistFragment
+  }
+}
+
+mutation addSimilarArtist($addSimilarData: AddSimilarArtistInput!) {
+  addSimilarArtist(data: $addSimilarData) {
+    ...ArtistFragment
+  }
+}
+
+query getArtist($getArtistData: GetArtistInput!) {
+  getArtist(data: $getArtistData) {
+    ...ArtistFragment
+  }
+}

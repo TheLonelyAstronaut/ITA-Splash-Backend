@@ -9,6 +9,7 @@ import { AddArtistInput } from '../dto/inputs/add-artist.input';
 import { ArtistOutput } from '../dto/outputs/artist.output';
 import { AddSimilarArtistInput } from '../dto/inputs/add-similar-artist.input';
 import { GetArtistInput } from '../dto/inputs/get-artist.input';
+import { toAlbumOutput } from '../../albums/mappers/to-album-output.mapper';
 
 @Resolver()
 export class ArtistsResolver {
@@ -29,7 +30,18 @@ export class ArtistsResolver {
 	}
 
 	@Query(() => ArtistOutput)
+	@UseGuards(GqlAuthGuard)
 	async getArtist(@Args('data') data: GetArtistInput): Promise<ArtistOutput> {
-		return await this.artistsService.findByID(data.id, true)
+		const output = await this.artistsService.findByID(data.id, [
+			'similarArtists',
+			'albums',
+			'albums.tracks',
+			'albums.artist',
+		]);
+
+		return {
+			...output,
+			albums: output.albums.map(toAlbumOutput),
+		};
 	}
 }

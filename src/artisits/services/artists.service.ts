@@ -20,17 +20,17 @@ export class ArtistsService {
 		return artist;
 	}
 
-	async findByID(id: number, includeNullable?: boolean): Promise<Artist> {
+	async findByID(id: number, relations?: string[]): Promise<Artist> {
 		return await this.artistRepository.findOneOrFail({
 			where: {
 				id,
 			},
-			relations: includeNullable ? ['similarArtists', 'albums'] : [],
+			relations,
 		});
 	}
 
 	async addSimilarArtist(artistID: number, similarArtistID: number): Promise<ArtistOutput> {
-		const artist = await this.findByID(artistID, true);
+		const artist = await this.findByID(artistID, ['similarArtists', 'albums', 'albums.tracks']);
 
 		const similarArtist = await this.findByID(similarArtistID);
 
@@ -42,10 +42,7 @@ export class ArtistsService {
 
 		await this.artistRepository.save(artist);
 
-		return {
-			...artist,
-			albums: [],
-		};
+		return artist;
 	}
 
 	async getSubscribers(artistID: number): Promise<void> {

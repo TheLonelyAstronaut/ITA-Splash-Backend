@@ -1,12 +1,13 @@
 import { Track } from '../../tracks/models/track.model';
 import { TrackOutput } from '../../tracks/dto/outputs/track.output';
+import { Album } from '../models/album.model';
 
-export const toTrackOutput = (tracks: Track[]): TrackOutput[] =>
+export const toTrackOutput = (tracks: Track[], album?: Album): TrackOutput[] =>
 	tracks.map((track) => ({
 		id: track.id,
-		albumID: track.album.id,
-		artistID: track.album.artist.id,
+		albumID: album ? album.id : track.album.id,
+		artistID: album ? album.artist.id : track.album.artist.id,
 		title: track.title,
 		url: track.url,
-		artwork: track.album.artwork,
+		artwork: album ? album.artwork : track.album.artwork,
 	}));

@@ -1,0 +1,29 @@
+{
+  "data": {
+    "email": "vla1234567d@gmail.com",
+    "password": "123",
+    "FCMToken": "FCMToken1234",
+    "username": "vlad"
+  },
+  "addArtistData": {
+    "name": "Astro Similar Artist 123",
+    "image": "Astro Similar Image 123"
+  },
+  "addSimilarData": {
+    "artistID": 1,
+    "similarArtistID": 2
+  },
+  "getArtistData":{
+    "id": 1
+  },
+  "addTrackData":{
+    "title": "Телу тоже больно 2",
+    "url": "Amazon link 2"
+  },
+  "addAlbumData": {
+    "name": "bruh",
+    "artistID": 1,
+    "tracks": [1, 2],
+    "image": "meh"
+  }
+}

@@ -28,8 +28,7 @@ export class AlbumsResolver {
 		const artist: Artist = await this.artistsService.findByID(data.artistID);
 		const tracks: Track[] = await this.tracksService.findByID(data.tracks, true);
 		const album = await this.albumsService.create(artist, tracks, data);
-
-		console.log(album.tracks);
+		album.tracks = await this.tracksService.findByID(data.tracks, true);
 
 		return {
 			...album,
