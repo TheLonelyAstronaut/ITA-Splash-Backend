@@ -13,7 +13,6 @@ import { Track } from '../../tracks/models/track.model';
 import { TracksService } from '../../tracks/services/tracks.service';
 import { toTrackOutput } from '../mappers/to-track-input.mapper';
 import { NotificationsService } from '../../firebase/notifications/services/notifications.service';
-import { fromMultidimensional } from '../../utils/mappers';
 import { toNotification } from '../../firebase/notifications/mappers/mappers';
 import { getFCMTokens } from '../../artisits/mappers/mappers';
 

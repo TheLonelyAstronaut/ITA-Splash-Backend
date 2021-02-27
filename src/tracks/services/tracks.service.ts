@@ -19,8 +19,8 @@ export class TracksService {
 
 	async findByID(ids: number[], includeNullable?: boolean): Promise<Track[]> {
 		return await this.tracksRepository.find({
-			where: ids.map(id => ({ id })),
-			relations: includeNullable ? ['album', 'album.artist'] : []
+			where: ids.map((id) => ({ id })),
+			relations: includeNullable ? ['album', 'album.artist'] : [],
 		});
 	}
 }

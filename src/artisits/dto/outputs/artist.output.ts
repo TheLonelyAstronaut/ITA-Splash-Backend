@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 import { Artist } from '../../models/artist.model';
 import { AlbumOutput } from '../../../albums/dto/outputs/album.output';
