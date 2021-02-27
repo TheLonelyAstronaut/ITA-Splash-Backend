@@ -37,6 +37,7 @@ export class ArtistsResolver {
 			'albums',
 			'albums.tracks',
 			'albums.artist',
+			'subscribers',
 		]);
 
 		return {

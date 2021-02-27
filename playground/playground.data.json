@@ -3,7 +3,7 @@
     "email": "vla1234567d@gmail.com",
     "password": "123",
     "FCMToken": "FCMToken1234",
-    "username": "vlad"
+    "username": "bruhuser"
   },
   "addArtistData": {
     "name": "Astro Similar Artist 123",
@@ -17,13 +17,14 @@
     "id": 1
   },
   "addTrackData":{
-    "title": "Телу тоже больно 2",
-    "url": "Amazon link 2"
+    "title": "Телу тоже больно 1",
+    "url": "Amazon link 1"
   },
   "addAlbumData": {
-    "name": "bruh",
+    "name": "bruh12431444",
     "artistID": 1,
-    "tracks": [1, 2],
+    "tracks": [3],
     "image": "meh"
-  }
+  },
+  "artistID": 1
 }

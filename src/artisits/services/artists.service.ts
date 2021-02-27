@@ -15,6 +15,7 @@ export class ArtistsService {
 		artist.name = artistInput.name;
 		artist.similarArtists = [];
 		artist.albums = [];
+		artist.subscribers = [];
 
 		await this.artistRepository.save(artist);
 		return artist;
@@ -34,18 +35,10 @@ export class ArtistsService {
 
 		const similarArtist = await this.findByID(similarArtistID);
 
-		if (!artist.similarArtists) {
-			artist.similarArtists = [similarArtist];
-		} else {
-			artist.similarArtists = [...artist.similarArtists, similarArtist];
-		}
+		artist.similarArtists = [...artist.similarArtists, similarArtist];
 
 		await this.artistRepository.save(artist);
 
 		return artist;
-	}
-
-	async getSubscribers(artistID: number): Promise<void> {
-		console.log('get subs');
 	}
 }

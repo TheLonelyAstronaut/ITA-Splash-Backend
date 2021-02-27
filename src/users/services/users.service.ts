@@ -6,6 +6,7 @@ import { User } from '../models/user.model';
 import { cloneFields } from '../../utils/mappers';
 import { generateHash } from '../../utils/hasher';
 import { Role } from '../../utils/roles/roles.enum';
+import { Artist } from '../../artisits/models/artist.model';
 
 @Injectable()
 export class UsersService {
@@ -17,31 +18,32 @@ export class UsersService {
 		userEntity.password = await generateHash(userEntity.password);
 		userEntity.role = Role.Admin;
 		userEntity.FCMTokens = [];
+		userEntity.subscriptions = [];
 
 		await this.userRepository.save(userEntity);
 	}
 
-	async findById(id: number): Promise<UserGraphQL> {
+	async findById(id: number, relations?: string[]): Promise<User> {
 		return await this.userRepository.findOneOrFail({
 			where: {
 				id,
 			},
+			relations,
 		});
 	}
 
-	async findByID(ids: number[]): Promise<UserGraphQL[]> {
-		return await this.userRepository.find({
-			where: {
-				id: ids,
-			},
-		});
-	}
+	async subscribe(id: number, artist: Artist): Promise<Artist[]> {
+		const user = await this.findById(id, ['subscriptions']);
 
-	async getSubscribers(artistID: number): Promise<User[]> {
-		const users = await this.userRepository.find({
-			relations: ['FCMTokens'],
-		});
+		const index = user.subscriptions.findIndex((sub) => sub.id === artist.id);
 
-		return users.filter((user) => user.FCMTokens.length);
+		if (index >= 0) {
+			user.subscriptions.splice(index, 1);
+		} else {
+			user.subscriptions = [...user.subscriptions, artist];
+		}
+
+		await this.userRepository.save(user);
+		return user.subscriptions;
 	}
 }

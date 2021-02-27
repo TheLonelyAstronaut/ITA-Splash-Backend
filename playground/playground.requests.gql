@@ -1,3 +1,4 @@
+# Write your query or mutation here
 fragment TrackFragment on TrackOutput {
   id
   title
@@ -40,6 +41,7 @@ query getCurrentUser{
     id
     email
     username
+    subscriptions
   }
 }
 
@@ -83,4 +85,8 @@ query getArtist($getArtistData: GetArtistInput!) {
   getArtist(data: $getArtistData) {
     ...ArtistFragment
   }
+}
+
+mutation subscribe($artistID: Float!) {
+  subscribe(data: $artistID)
 }

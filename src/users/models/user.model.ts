@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../../utils/roles/roles.enum';
 import { FCMToken } from '../../firebase/fcm-tokens/models/fcm-token.model';
+import { Artist } from '../../artisits/models/artist.model';
 
 @Entity()
 export class User {
@@ -21,4 +22,8 @@ export class User {
 
 	@OneToMany(() => FCMToken, (token) => token.user)
 	FCMTokens: FCMToken[];
+
+	@ManyToMany(() => Artist, (artist) => artist.subscribers)
+	@JoinTable()
+	subscriptions: Artist[];
 }

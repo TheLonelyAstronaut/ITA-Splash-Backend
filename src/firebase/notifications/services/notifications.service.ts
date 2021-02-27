@@ -15,6 +15,10 @@ admin.initializeApp({
 @Injectable()
 export class NotificationsService {
 	async sendNotification(data: SendNotificationInput): Promise<void> {
+		if (!data.receivers.length) {
+			return;
+		}
+
 		admin
 			.messaging()
 			.sendMulticast({
