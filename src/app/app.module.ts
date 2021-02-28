@@ -16,6 +16,7 @@ import { HomeModule } from '../home/home.module';
 		GraphQLModule.forRoot({
 			debug: !!parseInt(process.env.DEBUG),
 			playground: !!parseInt(process.env.ENABLE_PLAYGROUND),
+			introspection: !!parseInt(process.env.ENABLE_PLAYGROUND),
 			autoSchemaFile: 'schema.gql',
 		}),
 		TypeOrmModule.forRoot({
