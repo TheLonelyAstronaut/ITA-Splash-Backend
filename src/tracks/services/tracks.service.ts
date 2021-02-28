@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Track } from '../models/track.model';
 import { Repository } from 'typeorm';
-import { AddTrackInput } from '../dto/inputs/add-track.input';
 
 @Injectable()
 export class TracksService {
@@ -16,8 +15,6 @@ export class TracksService {
 		await this.tracksRepository.save(track);
 		return track;
 	}
-
-	//['album', 'album.artist']
 
 	async findByID(id: number, relations?: string[]): Promise<Track> {
 		return await this.tracksRepository.findOneOrFail({

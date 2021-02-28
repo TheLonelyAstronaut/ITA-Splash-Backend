@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Artist } from '../models/artist.model';
 import { Repository } from 'typeorm';
-import { AddArtistInput } from '../dto/inputs/add-artist.input';
 import { ArtistOutput } from '../dto/outputs/artist.output';
 
 @Injectable()

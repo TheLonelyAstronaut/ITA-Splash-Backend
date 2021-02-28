@@ -2,7 +2,6 @@ import { createUnionType, Field, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 import { AlbumOutput } from '../../../albums/dto/outputs/album.output';
 import { ArtistOutput } from '../../../artisits/dto/outputs/artist.output';
-import { TrackOutput } from '../../../tracks/dto/outputs/track.output';
 import { PlaylistOutput } from '../../../playlists/dto/outputs/playlist.output';
 
 export const HomepageData = createUnionType({

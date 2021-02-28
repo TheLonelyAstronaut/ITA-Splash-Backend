@@ -5,7 +5,6 @@ import { UsersService } from '../../users/services/users.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { convertTypes } from '../../utils/mappers';
 import { UserGraphQL } from '../../users/models/user.graphql';
-import { ArtistsService } from '../../artisits/services/artists.service';
 import { PlaylistsService } from '../../playlists/services/playlists.service';
 
 @Resolver()
