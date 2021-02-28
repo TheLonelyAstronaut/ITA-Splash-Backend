@@ -27,6 +27,7 @@ import { HomeModule } from '../home/home.module';
 			database: process.env.DATABASE_NAME,
 			autoLoadEntities: true,
 			synchronize: true,
+			ssl: true,
 		}),
 		AuthenticationModule,
 		UsersModule,
