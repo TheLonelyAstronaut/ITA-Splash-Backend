@@ -1,6 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import * as dotenv from 'dotenv';
-dotenv.config();
+
+if (process.env.NODE_ENV != 'production') {
+	dotenv.config();
+}
 
 import { AppModule } from './app/app.module';
 
