@@ -1,0 +1,149 @@
+# Write your query or mutation here
+fragment TrackFragment on TrackOutput {
+  id
+  title
+  artwork
+  albumID
+  artistID
+  url
+}
+
+fragment PlaylistFragment on PlaylistOutput {
+  id
+  liked
+  name
+  tracks {
+    ...TrackFragment
+  }
+}
+
+fragment AlbumFragment on AlbumOutput {
+  id
+  name
+  artwork
+  tracks {
+    ...TrackFragment
+  }
+}
+
+fragment ArtistFragment on ArtistOutput {
+  id
+  image
+  name
+  albums {
+    ...AlbumFragment
+  }
+  similarArtists {
+    id
+    image
+    name
+  }
+}
+
+mutation login($loginData: LoginInput!) {
+  login(data: $loginData) {
+    accessToken
+  }
+}
+
+query getCurrentUser {
+  getCurrentUser {
+    id
+    email
+    username
+    subscriptions
+    playlists {
+      ...PlaylistFragment
+    }
+  }
+}
+
+mutation register($registerData: RegisterInput!) {
+  register(data: $registerData) {
+    accessToken
+  }
+}
+
+mutation addSimilarArtist($addSimilarData: AddSimilarArtistInput!) {
+  addSimilarArtist(data: $addSimilarData) {
+    ...ArtistFragment
+  }
+}
+
+query getArtist($getArtistData: GetArtistInput!) {
+  getArtist(data: $getArtistData) {
+    ...ArtistFragment
+  }
+}
+
+mutation subscribe($artistID: Float!) {
+  subscribe(data: $artistID)
+}
+
+query getAlbum($albumID: Float!) {
+  getAlbum(data: $albumID) {
+    ...AlbumFragment
+  }
+}
+
+mutation createPlaylist($createPlaylistData: CreatePlaylistInput!) {
+  createPlaylist(data: $createPlaylistData) {
+    ...PlaylistFragment
+  }
+}
+
+mutation addOrRemoveFromPlaylist($addOrRemoveData: AddOrRemoveInput!) {
+  addOrRemoveFromPlaylist(data: $addOrRemoveData) {
+    ...PlaylistFragment
+  }
+}
+
+query getPlaylist($playlistID: Float!) {
+  getPlaylist(data: $playlistID) {
+    ...PlaylistFragment
+  }
+}
+
+query search($searchQuery: SearchInput!) {
+  findByQuery(data: $searchQuery) {
+    artists {
+      id
+      image
+      name
+    }
+    albums {
+      id
+      artwork
+      name
+    }
+    tracks {
+      ...TrackFragment
+    }
+  }
+}
+
+query getHomepage {
+  getHomepage {
+    title
+    data {
+      __typename
+      ... on ArtistOutput {
+        id
+        image
+        name
+      }
+      ... on AlbumOutput {
+        id
+        name
+        artwork
+      }
+      ... on PlaylistOutput {
+        id
+        name
+        liked
+      }
+    }
+  }
+}
+
+#Also you can test addTrack, addAlbum & add addArtist with Firecamp app

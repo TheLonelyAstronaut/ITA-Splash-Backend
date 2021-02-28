@@ -1,0 +1,132 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TrackOutput {
+  id: Float!
+  title: String!
+  url: String!
+  artwork: String!
+  albumID: Float!
+  artistID: Float!
+}
+
+type PlaylistOutput {
+  name: String!
+  id: Float!
+  liked: Boolean!
+  tracks: [TrackOutput!]!
+}
+
+type UserOutput {
+  id: Float!
+  email: String!
+  username: String!
+  subscriptions: [Int!]!
+  playlists: [PlaylistOutput!]!
+}
+
+type AlbumOutput {
+  name: String!
+  artwork: String!
+  id: Float!
+  tracks: [TrackOutput!]!
+}
+
+type ArtistOutput {
+  name: String!
+  image: String!
+  id: Float!
+  similarArtists: [ArtistOutput]!
+  albums: [AlbumOutput!]!
+}
+
+type LoginOutput {
+  accessToken: String!
+}
+
+type RegisterOutput {
+  accessToken: String!
+}
+
+type SearchOutput {
+  artists: [ArtistOutput!]!
+  albums: [AlbumOutput!]!
+  tracks: [TrackOutput!]!
+}
+
+type HomepageDataOutput {
+  title: String!
+  data: [HomepageData!]!
+}
+
+union HomepageData = ArtistOutput | PlaylistOutput | AlbumOutput
+
+type Query {
+  getCurrentUser: UserOutput!
+  getArtist(data: GetArtistInput!): ArtistOutput!
+  getAlbum(data: Float!): AlbumOutput!
+  getPlaylist(data: Float!): PlaylistOutput!
+  findByQuery(data: SearchInput!): SearchOutput!
+  getHomepage: [HomepageDataOutput!]!
+}
+
+input GetArtistInput {
+  id: Float!
+}
+
+input SearchInput {
+  query: String!
+}
+
+type Mutation {
+  login(data: LoginInput!): LoginOutput!
+  register(data: RegisterInput!): RegisterOutput!
+  subscribe(data: Float!): [Int!]!
+  addArtist(file: Upload!, data: AddArtistInput!): ArtistOutput!
+  addSimilarArtist(data: AddSimilarArtistInput!): ArtistOutput!
+  addTrack(file: Upload!, title: String!): TrackOutput!
+  addAlbum(file: Upload!, data: AddAlbumInput!): AlbumOutput!
+  createPlaylist(data: CreatePlaylistInput!): PlaylistOutput!
+  addOrRemoveFromPlaylist(data: AddOrRemoveInput!): PlaylistOutput!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+  FCMToken: String!
+}
+
+input RegisterInput {
+  username: String!
+  email: String!
+  password: String!
+  FCMToken: String!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input AddArtistInput {
+  name: String!
+}
+
+input AddSimilarArtistInput {
+  artistID: Float!
+  similarArtistID: Float!
+}
+
+input AddAlbumInput {
+  name: String!
+  tracks: [Int!]!
+  artistID: Float!
+}
+
+input CreatePlaylistInput {
+  name: String!
+}
+
+input AddOrRemoveInput {
+  playlistID: Float!
+  trackID: Float!
+}
