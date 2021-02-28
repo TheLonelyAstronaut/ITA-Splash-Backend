@@ -7,10 +7,6 @@ export class AddAlbumInput {
 	@IsNotEmpty()
 	name: string;
 
-	@Field()
-	@IsNotEmpty()
-	image: string;
-
 	@Field(() => [Int])
 	@IsNotEmpty()
 	tracks: number[];

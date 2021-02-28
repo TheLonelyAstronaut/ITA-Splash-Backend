@@ -2,6 +2,7 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColum
 import { Role } from '../../utils/roles/roles.enum';
 import { FCMToken } from '../../firebase/fcm-tokens/models/fcm-token.model';
 import { Artist } from '../../artisits/models/artist.model';
+import { Playlist } from '../../playlists/models/playlist.model';
 
 @Entity()
 export class User {
@@ -26,4 +27,7 @@ export class User {
 	@ManyToMany(() => Artist, (artist) => artist.subscribers)
 	@JoinTable()
 	subscriptions: Artist[];
+
+	@OneToMany(() => Playlist, (playlist) => playlist.owner)
+	playlists: Playlist[];
 }

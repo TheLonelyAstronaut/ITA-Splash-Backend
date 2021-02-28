@@ -6,10 +6,11 @@ import { AlbumsResolver } from './resolvers/albums.resolver';
 import { ArtistsModule } from '../artisits/artists.module';
 import { TracksModule } from '../tracks/tracks.module';
 import { NotificationsModule } from '../firebase/notifications/notifications.module';
+import { AWSS3Provider } from '../aws-s3/providers/aws-s3.provider';
 
 @Module({
 	imports: [TypeOrmModule.forFeature([Album]), ArtistsModule, TracksModule, NotificationsModule],
-	providers: [AlbumsResolver, AlbumsService],
+	providers: [AlbumsResolver, AlbumsService, AWSS3Provider],
 	exports: [AlbumsService],
 })
 export class AlbumsModule {}

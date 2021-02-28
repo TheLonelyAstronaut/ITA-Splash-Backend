@@ -12,15 +12,17 @@ import { Artist } from '../../artisits/models/artist.model';
 export class UsersService {
 	constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) {}
 
-	async create(data: UserGraphQL): Promise<void> {
+	async create(data: UserGraphQL): Promise<User> {
 		const userEntity = new User();
 		cloneFields<UserGraphQL, User>(data, userEntity);
 		userEntity.password = await generateHash(userEntity.password);
 		userEntity.role = Role.Admin;
 		userEntity.FCMTokens = [];
 		userEntity.subscriptions = [];
+		userEntity.playlists = [];
 
 		await this.userRepository.save(userEntity);
+		return userEntity;
 	}
 
 	async findById(id: number, relations?: string[]): Promise<User> {

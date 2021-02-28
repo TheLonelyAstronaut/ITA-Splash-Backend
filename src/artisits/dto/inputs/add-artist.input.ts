@@ -6,8 +6,4 @@ export class AddArtistInput {
 	@Field()
 	@IsNotEmpty()
 	name: string;
-
-	@Field()
-	@IsNotEmpty()
-	image: string;
 }

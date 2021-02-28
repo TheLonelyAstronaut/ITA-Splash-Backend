@@ -5,6 +5,16 @@ fragment TrackFragment on TrackOutput {
   artwork
   albumID
   artistID
+  url
+}
+
+fragment PlaylistFragment on PlaylistOutput {
+  id
+  liked
+  name
+  tracks {
+    ...TrackFragment
+  }
 }
 
 fragment AlbumFragment on AlbumOutput {
@@ -17,61 +27,40 @@ fragment AlbumFragment on AlbumOutput {
 }
 
 fragment ArtistFragment on ArtistOutput {
-  	id
+  id
+  image
+  name
+  albums {
+    ...AlbumFragment
+  }
+  similarArtists {
+    id
     image
-  	name
-  	albums {
-      ...AlbumFragment
-    }
-    similarArtists {
-      id
-      image
-      name
-    }
+    name
+  }
 }
 
-mutation login($data: LoginInput!){
-  login(data: $data) {
+mutation login($loginData: LoginInput!) {
+  login(data: $loginData) {
     accessToken
   }
 }
 
-query getCurrentUser{
+query getCurrentUser {
   getCurrentUser {
     id
     email
     username
     subscriptions
+    playlists {
+      ...PlaylistFragment
+    }
   }
 }
 
-query testRoles {
-  testAdminRole
-}
-
-mutation register($data: RegisterInput!){
-  register(data:$data){
+mutation register($registerData: RegisterInput!) {
+  register(data: $registerData) {
     accessToken
-  }
-}
-
-mutation addTrack($addTrackData: AddTrackInput!){
-  addTrack(data: $addTrackData) {
-    id
-    url
-    title
-  }
-}
-
-mutation addAlbum($addAlbumData: AddAlbumInput!) {
-  addAlbum(data: $addAlbumData) {
-    ...AlbumFragment
-  }
-}
-
-mutation addArtist($addArtistData: AddArtistInput!) {
-  addArtist(data: $addArtistData) {
-    ...ArtistFragment
   }
 }
 
@@ -90,3 +79,71 @@ query getArtist($getArtistData: GetArtistInput!) {
 mutation subscribe($artistID: Float!) {
   subscribe(data: $artistID)
 }
+
+query getAlbum($albumID: Float!) {
+  getAlbum(data: $albumID) {
+    ...AlbumFragment
+  }
+}
+
+mutation createPlaylist($createPlaylistData: CreatePlaylistInput!) {
+  createPlaylist(data: $createPlaylistData) {
+    ...PlaylistFragment
+  }
+}
+
+mutation addOrRemoveFromPlaylist($addOrRemoveData: AddOrRemoveInput!) {
+  addOrRemoveFromPlaylist(data: $addOrRemoveData) {
+    ...PlaylistFragment
+  }
+}
+
+query getPlaylist($playlistID: Float!) {
+  getPlaylist(data: $playlistID) {
+    ...PlaylistFragment
+  }
+}
+
+query search($searchQuery: SearchInput!) {
+  findByQuery(data: $searchQuery) {
+    artists {
+      id
+      image
+      name
+    }
+    albums {
+      id
+      artwork
+      name
+    }
+    tracks {
+      ...TrackFragment
+    }
+  }
+}
+
+query getHomepage {
+  getHomepage {
+    title
+    data {
+      __typename
+      ... on ArtistOutput {
+        id
+        image
+        name
+      }
+      ... on AlbumOutput {
+        id
+        name
+        artwork
+      }
+      ... on PlaylistOutput {
+        id
+        name
+        liked
+      }
+    }
+  }
+}
+
+#Also you can test addTrack, addAlbum & add addArtist with Firecamp app

@@ -1,13 +1,14 @@
 {
-  "data": {
+  "loginData": {
+    "email": "vla1234567d@gmail.com",
+    "password": "123",
+    "FCMToken": "FCMToken1234"
+  },
+  "registerData": {
     "email": "vla1234567d@gmail.com",
     "password": "123",
     "FCMToken": "FCMToken1234",
-    "username": "bruhuser"
-  },
-  "addArtistData": {
-    "name": "Astro Similar Artist 123",
-    "image": "Astro Similar Image 123"
+    "username": "Discourse is Dead"
   },
   "addSimilarData": {
     "artistID": 1,
@@ -16,15 +17,17 @@
   "getArtistData":{
     "id": 1
   },
-  "addTrackData":{
-    "title": "Телу тоже больно 1",
-    "url": "Amazon link 1"
+  "artistID": 1,
+  "albumID": 1,
+  "createPlaylistData": {
+    "name": "Astro Bruh Playlist 123"
   },
-  "addAlbumData": {
-    "name": "bruh12431444",
-    "artistID": 1,
-    "tracks": [3],
-    "image": "meh"
+  "addOrRemoveData": {
+    "trackID": 1,
+    "playlistID": 2
   },
-  "artistID": 1
+  "playlistID": 1,
+  "searchQuery":{
+    "query": "A"
+  }
 }

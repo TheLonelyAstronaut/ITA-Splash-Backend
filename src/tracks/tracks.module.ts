@@ -3,12 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TracksService } from './services/tracks.service';
 import { Track } from './models/track.model';
 import { TracksResolver } from './resolvers/tracks.resolver';
-import { UsersModule } from '../users/users.module';
-import { NotificationsModule } from '../firebase/notifications/notifications.module';
+import { AWSS3Provider } from '../aws-s3/providers/aws-s3.provider';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([Track]), UsersModule, NotificationsModule],
-	providers: [TracksResolver, TracksService],
+	imports: [TypeOrmModule.forFeature([Track])],
+	providers: [TracksResolver, TracksService, AWSS3Provider],
 	exports: [TracksService],
 })
 export class TracksModule {}

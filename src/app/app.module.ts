@@ -7,12 +7,15 @@ import { FCMTokensModule } from '../firebase/fcm-tokens/fcm-tokens.module';
 import { TracksModule } from '../tracks/tracks.module';
 import { ArtistsModule } from '../artisits/artists.module';
 import { AlbumsModule } from '../albums/albums.module';
+import { PlaylistsModule } from '../playlists/playlists.module';
+import { SearchModule } from '../search/search.module';
+import { HomeModule } from '../home/home.module';
 
 @Module({
 	imports: [
 		GraphQLModule.forRoot({
-			debug: true,
-			playground: true,
+			debug: !!parseInt(process.env.DEBUG),
+			playground: !!parseInt(process.env.ENABLE_PLAYGROUND),
 			autoSchemaFile: 'schema.gql',
 		}),
 		TypeOrmModule.forRoot({
@@ -31,6 +34,9 @@ import { AlbumsModule } from '../albums/albums.module';
 		TracksModule,
 		ArtistsModule,
 		AlbumsModule,
+		PlaylistsModule,
+		SearchModule,
+		HomeModule,
 	],
 })
 export class AppModule {}

@@ -9,10 +9,10 @@ import { ArtistOutput } from '../dto/outputs/artist.output';
 export class ArtistsService {
 	constructor(@InjectRepository(Artist) private artistRepository: Repository<Artist>) {}
 
-	async create(artistInput: AddArtistInput): Promise<Artist> {
+	async create(name: string, image: string): Promise<Artist> {
 		const artist = new Artist();
-		artist.image = artistInput.image;
-		artist.name = artistInput.name;
+		artist.image = image;
+		artist.name = name;
 		artist.similarArtists = [];
 		artist.albums = [];
 		artist.subscribers = [];

@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AlbumsService } from '../services/albums.service';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../../security/guards/gql-auth-guard.guard';
@@ -11,10 +11,14 @@ import { ArtistsService } from '../../artisits/services/artists.service';
 import { Artist } from '../../artisits/models/artist.model';
 import { Track } from '../../tracks/models/track.model';
 import { TracksService } from '../../tracks/services/tracks.service';
-import { toTrackOutput } from '../mappers/to-track-input.mapper';
 import { NotificationsService } from '../../firebase/notifications/services/notifications.service';
 import { toNotification } from '../../firebase/notifications/mappers/mappers';
 import { getFCMTokens } from '../../artisits/mappers/mappers';
+import { CurrentUser } from '../../users/decorators/current-user.decorator';
+import { UserGraphQL } from '../../users/models/user.graphql';
+import { toAlbumOutput } from '../mappers/to-album-output.mapper';
+import { FileUpload, GraphQLUpload } from 'graphql-upload';
+import { AWSS3Provider } from '../../aws-s3/providers/aws-s3.provider';
 
 @Resolver()
 export class AlbumsResolver {
@@ -22,29 +26,46 @@ export class AlbumsResolver {
 		private readonly albumsService: AlbumsService,
 		private readonly artistsService: ArtistsService,
 		private readonly tracksService: TracksService,
-		private readonly notificationsService: NotificationsService
+		private readonly notificationsService: NotificationsService,
+		private readonly uploadProvider: AWSS3Provider
 	) {}
 
 	@Mutation(() => AlbumOutput)
 	@UseGuards(GqlAuthGuard, RolesGuard)
 	@Roles(Role.Admin)
-	async addAlbum(@Args('data') data: AddAlbumInput): Promise<AlbumOutput> {
+	async addAlbum(
+		@Args('data') data: AddAlbumInput,
+		@Args('file', { type: () => GraphQLUpload }) file: Promise<FileUpload>
+	): Promise<AlbumOutput> {
 		const artist: Artist = await this.artistsService.findByID(data.artistID, [
 			'subscribers',
 			'subscribers.FCMTokens',
 		]);
-		const tracks: Track[] = await this.tracksService.findByID(data.tracks, true);
-		const album = await this.albumsService.create(artist, tracks, data);
-		album.tracks = await this.tracksService.findByID(data.tracks, true);
+		const tracks: Track[] = await this.tracksService.findMultipleByID(data.tracks, ['album', 'album.artist']);
+
+		const toUpload = await file;
+
+		const output = await this.uploadProvider.uploadFile({
+			...toUpload,
+			path: `${Date.now().toString()}`,
+		});
+
+		const album = await this.albumsService.create(artist, tracks, data, output.url);
+		album.tracks = await this.tracksService.findMultipleByID(data.tracks, ['album', 'album.artist']);
 
 		await this.notificationsService.sendNotification({
 			receivers: getFCMTokens(artist),
 			notification: toNotification(artist, album),
 		});
 
-		return {
-			...album,
-			tracks: toTrackOutput(album.tracks),
-		};
+		return toAlbumOutput(album);
+	}
+
+	@Query(() => AlbumOutput)
+	@UseGuards(GqlAuthGuard)
+	async getAlbum(@CurrentUser() parsedUser: UserGraphQL, @Args('data') albumID: number): Promise<AlbumOutput> {
+		const album = await this.albumsService.findByID(albumID, ['artist', 'tracks', 'tracks.album']);
+
+		return toAlbumOutput(album);
 	}
 }

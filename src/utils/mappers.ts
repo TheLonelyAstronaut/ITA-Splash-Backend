@@ -5,7 +5,7 @@ export function convertTypes<T, K>(from: T): K {
 		result[key] = from[key];
 	});
 
-	return result as K;
+	return result;
 }
 
 export function cloneFields<T, K>(from: T, to: K): K {
@@ -13,7 +13,7 @@ export function cloneFields<T, K>(from: T, to: K): K {
 		to[key] = from[key];
 	});
 
-	return to as K;
+	return to;
 }
 
 export type Multidimensional<T> = Array<Multidimensional<T>> | T;

@@ -6,8 +6,4 @@ export class AddTrackInput {
 	@Field()
 	@IsNotEmpty()
 	title: string;
-
-	@Field()
-	@IsNotEmpty()
-	url: string;
 }

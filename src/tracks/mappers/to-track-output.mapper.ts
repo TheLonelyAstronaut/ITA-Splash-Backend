@@ -1,6 +1,6 @@
-import { Track } from '../../tracks/models/track.model';
-import { TrackOutput } from '../../tracks/dto/outputs/track.output';
-import { Album } from '../models/album.model';
+import { Track } from '../models/track.model';
+import { TrackOutput } from '../dto/outputs/track.output';
+import { Album } from '../../albums/models/album.model';
 
 export const toTrackOutput = (tracks: Track[], album?: Album): TrackOutput[] =>
 	tracks.map((track) => ({

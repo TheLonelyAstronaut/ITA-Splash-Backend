@@ -10,14 +10,23 @@ import { AddAlbumInput } from '../dto/inputs/add-album.input';
 export class AlbumsService {
 	constructor(@InjectRepository(Album) private albumRepository: Repository<Album>) {}
 
-	async create(artist: Artist, tracks: Track[], albumInfo: AddAlbumInput): Promise<Album> {
+	async create(artist: Artist, tracks: Track[], albumInfo: AddAlbumInput, image: string): Promise<Album> {
 		const album = new Album();
 		album.tracks = tracks;
 		album.name = albumInfo.name;
-		album.artwork = albumInfo.image;
+		album.artwork = image;
 		album.artist = artist;
 
 		await this.albumRepository.save(album);
 		return album;
+	}
+
+	async findByID(id: number, relations?: string[]): Promise<Album> {
+		return await this.albumRepository.findOneOrFail({
+			where: {
+				id,
+			},
+			relations,
+		});
 	}
 }

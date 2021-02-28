@@ -9,17 +9,29 @@ import { AddArtistInput } from '../dto/inputs/add-artist.input';
 import { ArtistOutput } from '../dto/outputs/artist.output';
 import { AddSimilarArtistInput } from '../dto/inputs/add-similar-artist.input';
 import { GetArtistInput } from '../dto/inputs/get-artist.input';
-import { toAlbumOutput } from '../../albums/mappers/to-album-output.mapper';
+import { toArtistOutput } from '../mappers/to-artist-output.mapper';
+import { AWSS3Provider } from '../../aws-s3/providers/aws-s3.provider';
+import { FileUpload, GraphQLUpload } from 'graphql-upload';
 
 @Resolver()
 export class ArtistsResolver {
-	constructor(private readonly artistsService: ArtistsService) {}
+	constructor(private readonly artistsService: ArtistsService, private readonly uploadProvider: AWSS3Provider) {}
 
 	@Mutation(() => ArtistOutput)
 	@UseGuards(GqlAuthGuard, RolesGuard)
 	@Roles(Role.Admin)
-	async addArtist(@Args('data') artist: AddArtistInput): Promise<ArtistOutput> {
-		return await this.artistsService.create(artist);
+	async addArtist(
+		@Args('data') artist: AddArtistInput,
+		@Args('file', { type: () => GraphQLUpload }) file: Promise<FileUpload>
+	): Promise<ArtistOutput> {
+		const toUpload = await file;
+
+		const output = await this.uploadProvider.uploadFile({
+			...toUpload,
+			path: `${Date.now().toString()}`,
+		});
+
+		return await this.artistsService.create(artist.name, output.url);
 	}
 
 	@Mutation(() => ArtistOutput)
@@ -40,9 +52,6 @@ export class ArtistsResolver {
 			'subscribers',
 		]);
 
-		return {
-			...output,
-			albums: output.albums.map(toAlbumOutput),
-		};
+		return toArtistOutput(output);
 	}
 }

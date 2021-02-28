@@ -6,6 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { ArtistsService } from '../../artisits/services/artists.service';
 import { UserOutput } from '../dto/outputs/user.output';
+import { toUserOutput } from '../mappers/to-user-output.mapper';
 
 @Resolver()
 export class UsersResolver {
@@ -14,12 +15,15 @@ export class UsersResolver {
 	@Query(() => UserOutput)
 	@UseGuards(GqlAuthGuard)
 	async getCurrentUser(@CurrentUser() parsedUser: UserGraphQL): Promise<UserOutput> {
-		const user = await this.usersService.findById(parsedUser.id, ['subscriptions']);
+		const user = await this.usersService.findById(parsedUser.id, [
+			'subscriptions',
+			'playlists',
+			'playlists.tracks',
+			'playlists.tracks.album',
+			'playlists.tracks.album.artist',
+		]);
 
-		return {
-			...user,
-			subscriptions: user.subscriptions.map((artist) => artist.id),
-		};
+		return toUserOutput(user);
 	}
 
 	@Mutation(() => [Int])

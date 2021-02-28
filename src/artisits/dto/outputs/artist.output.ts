@@ -18,10 +18,8 @@ export class ArtistOutput {
 	id: number;
 
 	@Field(() => [ArtistOutput], { nullable: 'items' })
-	@IsNotEmpty()
 	similarArtists: Artist[];
 
 	@Field(() => [AlbumOutput])
-	@IsNotEmpty()
 	albums: AlbumOutput[];
 }
