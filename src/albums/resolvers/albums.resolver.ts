@@ -19,6 +19,7 @@ import { UserGraphQL } from '../../users/models/user.graphql';
 import { toAlbumOutput } from '../mappers/to-album-output.mapper';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { AWSS3Provider } from '../../aws-s3/providers/aws-s3.provider';
+import { UsersService } from '../../users/services/users.service';
 
 @Resolver()
 export class AlbumsResolver {
@@ -27,13 +28,15 @@ export class AlbumsResolver {
 		private readonly artistsService: ArtistsService,
 		private readonly tracksService: TracksService,
 		private readonly notificationsService: NotificationsService,
-		private readonly uploadProvider: AWSS3Provider
+		private readonly uploadProvider: AWSS3Provider,
+		private readonly usersService: UsersService
 	) {}
 
 	@Mutation(() => AlbumOutput)
 	@UseGuards(GqlAuthGuard, RolesGuard)
 	@Roles(Role.Admin)
 	async addAlbum(
+		@CurrentUser() parsedUser: UserGraphQL,
 		@Args('data') data: AddAlbumInput,
 		@Args('file', { type: () => GraphQLUpload }) file: Promise<FileUpload>
 	): Promise<AlbumOutput> {
@@ -58,7 +61,10 @@ export class AlbumsResolver {
 			notification: toNotification(artist, album),
 		});
 
-		return toAlbumOutput(album);
+		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
+
+		return toAlbumOutput(album, likedID);
 	}
 
 	@Query(() => AlbumOutput)
@@ -66,6 +72,9 @@ export class AlbumsResolver {
 	async getAlbum(@CurrentUser() parsedUser: UserGraphQL, @Args('data') albumID: number): Promise<AlbumOutput> {
 		const album = await this.albumsService.findByID(albumID, ['artist', 'tracks', 'tracks.album']);
 
-		return toAlbumOutput(album);
+		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
+
+		return toAlbumOutput(album, likedID);
 	}
 }

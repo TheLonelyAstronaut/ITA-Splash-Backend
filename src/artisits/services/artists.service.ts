@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Artist } from '../models/artist.model';
 import { Repository } from 'typeorm';
-import { ArtistOutput } from '../dto/outputs/artist.output';
 
 @Injectable()
 export class ArtistsService {
@@ -29,7 +28,7 @@ export class ArtistsService {
 		});
 	}
 
-	async addSimilarArtist(artistID: number, similarArtistID: number): Promise<ArtistOutput> {
+	async addSimilarArtist(artistID: number, similarArtistID: number): Promise<Artist> {
 		const artist = await this.findByID(artistID, ['similarArtists', 'albums', 'albums.tracks']);
 
 		const similarArtist = await this.findByID(similarArtistID);

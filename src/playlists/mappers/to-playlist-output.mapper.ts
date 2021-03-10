@@ -4,12 +4,12 @@ import { toTrackOutput } from '../../tracks/mappers/to-track-output.mapper';
 
 type SmartPlaylistOutput<T> = T extends Playlist[] ? PlaylistOutput[] : PlaylistOutput;
 
-export function toPlaylistOutput<T extends Playlist | Playlist[]>(from: T): SmartPlaylistOutput<T> {
+export function toPlaylistOutput<T extends Playlist | Playlist[]>(from: T, likedID: number[]): SmartPlaylistOutput<T> {
 	const mapper = (playlist: Playlist): PlaylistOutput => ({
 		id: playlist.id,
 		name: playlist.name,
 		liked: playlist.liked,
-		tracks: toTrackOutput(playlist.tracks),
+		tracks: toTrackOutput(playlist.tracks, likedID),
 	});
 
 	return (Array.isArray(from) ? from.map(mapper) : mapper(from as Playlist)) as SmartPlaylistOutput<T>;

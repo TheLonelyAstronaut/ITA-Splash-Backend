@@ -27,28 +27,41 @@ export class PlaylistsResolver {
 	): Promise<PlaylistOutput> {
 		const user = await this.usersService.findById(parsedUser.id, ['playlists']);
 		const playlist = await this.playlistsService.create(user, data);
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
 
-		return toPlaylistOutput(playlist);
+		return toPlaylistOutput(playlist, likedID);
 	}
 
 	@Mutation(() => PlaylistOutput)
 	@UseGuards(GqlAuthGuard)
-	async addOrRemoveFromPlaylist(@Args('data') data: AddOrRemoveInput): Promise<PlaylistOutput> {
+	async addOrRemoveFromPlaylist(
+		@CurrentUser() parsedUser: UserGraphQL,
+		@Args('data') data: AddOrRemoveInput
+	): Promise<PlaylistOutput> {
 		const track = await this.tracksService.findByID(data.trackID, ['album', 'album.artist']);
 		const updatedPlaylist = await this.playlistsService.addOrRemoveFromPlaylist(track, data.playlistID);
 
-		return toPlaylistOutput(updatedPlaylist);
+		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
+
+		return toPlaylistOutput(updatedPlaylist, likedID);
 	}
 
 	@Query(() => PlaylistOutput)
 	@UseGuards(GqlAuthGuard)
-	async getPlaylist(@Args('data') playlistID: number): Promise<PlaylistOutput> {
+	async getPlaylist(
+		@CurrentUser() parsedUser: UserGraphQL,
+		@Args('data') playlistID: number
+	): Promise<PlaylistOutput> {
 		const playlist = await this.playlistsService.findByID(playlistID, [
 			'tracks',
 			'tracks.album',
 			'tracks.album.artist',
 		]);
 
-		return toPlaylistOutput(playlist);
+		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
+
+		return toPlaylistOutput(playlist, likedID);
 	}
 }

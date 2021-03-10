@@ -10,6 +10,14 @@ export class AlbumOutput {
 
 	@Field()
 	@IsNotEmpty()
+	artistName: string;
+
+	@Field()
+	@IsNotEmpty()
+	artistID: number;
+
+	@Field()
+	@IsNotEmpty()
 	artwork: string;
 
 	@Field()

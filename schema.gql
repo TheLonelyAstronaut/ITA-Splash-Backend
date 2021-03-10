@@ -9,6 +9,8 @@ type TrackOutput {
   artwork: String!
   albumID: Float!
   artistID: Float!
+  artistName: String!
+  liked: Boolean!
 }
 
 type PlaylistOutput {
@@ -28,6 +30,8 @@ type UserOutput {
 
 type AlbumOutput {
   name: String!
+  artistName: String!
+  artistID: Float!
   artwork: String!
   id: Float!
   tracks: [TrackOutput!]!

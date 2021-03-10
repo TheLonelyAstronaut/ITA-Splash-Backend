@@ -13,18 +13,20 @@ export class HomeService {
 		const playlists = user.playlists;
 		const albums = fromMultidimensional(user.subscriptions.map((artist) => artist.albums));
 
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
+
 		return [
 			{
 				title: 'Artists you love',
-				data: toArtistOutput(artists),
+				data: toArtistOutput(artists, likedID),
 			},
 			{
 				title: 'Checkout your music',
-				data: toPlaylistOutput(playlists),
+				data: toPlaylistOutput(playlists, likedID),
 			},
 			{
 				title: 'Albums from your artists',
-				data: toAlbumOutput(albums),
+				data: toAlbumOutput(albums, likedID),
 			},
 		];
 	}

@@ -5,5 +5,8 @@ import { toPlaylistOutput } from '../../playlists/mappers/to-playlist-output.map
 export const toUserOutput = (user: User): UserOutput => ({
 	...user,
 	subscriptions: user.subscriptions.map((artist) => artist.id),
-	playlists: toPlaylistOutput(user.playlists),
+	playlists: toPlaylistOutput(
+		user.playlists,
+		user.playlists.find((playlist) => playlist.liked).tracks.map((track) => track.id)
+	),
 });

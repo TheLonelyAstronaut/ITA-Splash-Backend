@@ -23,4 +23,10 @@ export class TrackOutput {
 
 	@Field()
 	artistID?: number;
+
+	@Field()
+	artistName?: string;
+
+	@Field()
+	liked: boolean;
 }

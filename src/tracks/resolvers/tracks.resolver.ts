@@ -8,6 +8,7 @@ import { Role } from '../../utils/roles/roles.enum';
 import { TrackOutput } from '../dto/outputs/track.output';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
 import { AWSS3Provider } from '../../aws-s3/providers/aws-s3.provider';
+import { toTrackOutput } from '../mappers/to-track-output.mapper';
 
 @Resolver()
 export class TracksResolver {
@@ -27,6 +28,6 @@ export class TracksResolver {
 			path: `${Date.now().toString()}`,
 		});
 
-		return await this.tracksService.create(title, output.url);
+		return toTrackOutput(await this.tracksService.create(title, output.url), []);
 	}
 }

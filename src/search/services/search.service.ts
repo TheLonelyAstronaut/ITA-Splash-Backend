@@ -8,6 +8,7 @@ import { SearchOutput } from '../dto/outputs/search.output';
 import { toArtistOutput } from '../../artisits/mappers/to-artist-output.mapper';
 import { toAlbumOutput } from '../../albums/mappers/to-album-output.mapper';
 import { toTrackOutput } from '../../tracks/mappers/to-track-output.mapper';
+import { User } from '../../users/models/user.model';
 
 @Injectable()
 export class SearchService {
@@ -17,8 +18,9 @@ export class SearchService {
 		@InjectRepository(Artist) private artistsRepository: Repository<Artist>
 	) {}
 
-	async findByQuery(query: string): Promise<SearchOutput> {
+	async findByQuery(query: string, user: User): Promise<SearchOutput> {
 		const calculatedQuery = `%${query}%`;
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
 
 		const artists = await this.artistsRepository.find({
 			where: {
@@ -42,9 +44,12 @@ export class SearchService {
 		});
 
 		return {
-			artists: toArtistOutput(artists),
-			albums: toAlbumOutput(albums),
-			tracks: toTrackOutput(tracks.filter((track) => !!track.album)),
+			artists: toArtistOutput(artists, likedID),
+			albums: toAlbumOutput(albums, likedID),
+			tracks: toTrackOutput(
+				tracks.filter((track) => !!track.album),
+				likedID
+			),
 		};
 	}
 }

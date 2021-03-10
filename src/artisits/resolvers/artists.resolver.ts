@@ -12,15 +12,23 @@ import { GetArtistInput } from '../dto/inputs/get-artist.input';
 import { toArtistOutput } from '../mappers/to-artist-output.mapper';
 import { AWSS3Provider } from '../../aws-s3/providers/aws-s3.provider';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
+import { UsersService } from '../../users/services/users.service';
+import { CurrentUser } from '../../users/decorators/current-user.decorator';
+import { UserGraphQL } from '../../users/models/user.graphql';
 
 @Resolver()
 export class ArtistsResolver {
-	constructor(private readonly artistsService: ArtistsService, private readonly uploadProvider: AWSS3Provider) {}
+	constructor(
+		private readonly artistsService: ArtistsService,
+		private readonly uploadProvider: AWSS3Provider,
+		private readonly usersService: UsersService
+	) {}
 
 	@Mutation(() => ArtistOutput)
 	@UseGuards(GqlAuthGuard, RolesGuard)
 	@Roles(Role.Admin)
 	async addArtist(
+		@CurrentUser() parsedUser: UserGraphQL,
 		@Args('data') artist: AddArtistInput,
 		@Args('file', { type: () => GraphQLUpload }) file: Promise<FileUpload>
 	): Promise<ArtistOutput> {
@@ -31,19 +39,28 @@ export class ArtistsResolver {
 			path: `${Date.now().toString()}`,
 		});
 
-		return await this.artistsService.create(artist.name, output.url);
+		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
+
+		return toArtistOutput(await this.artistsService.create(artist.name, output.url), likedID);
 	}
 
 	@Mutation(() => ArtistOutput)
 	@UseGuards(GqlAuthGuard, RolesGuard)
 	@Roles(Role.Admin)
-	async addSimilarArtist(@Args('data') data: AddSimilarArtistInput): Promise<ArtistOutput> {
-		return await this.artistsService.addSimilarArtist(data.artistID, data.similarArtistID);
+	async addSimilarArtist(
+		@CurrentUser() parsedUser: UserGraphQL,
+		@Args('data') data: AddSimilarArtistInput
+	): Promise<ArtistOutput> {
+		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
+
+		return toArtistOutput(await this.artistsService.addSimilarArtist(data.artistID, data.similarArtistID), likedID);
 	}
 
 	@Query(() => ArtistOutput)
 	@UseGuards(GqlAuthGuard)
-	async getArtist(@Args('data') data: GetArtistInput): Promise<ArtistOutput> {
+	async getArtist(@CurrentUser() parsedUser: UserGraphQL, @Args('data') data: GetArtistInput): Promise<ArtistOutput> {
 		const output = await this.artistsService.findByID(data.id, [
 			'similarArtists',
 			'albums',
@@ -52,6 +69,9 @@ export class ArtistsResolver {
 			'subscribers',
 		]);
 
-		return toArtistOutput(output);
+		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
+		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
+
+		return toArtistOutput(output, likedID);
 	}
 }
