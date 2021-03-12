@@ -11,12 +11,12 @@ export function toTrackOutput<T extends Track | Track[]>(
 ): SmartTrackOutput<T> {
 	const mapper = (track: Track): TrackOutput => ({
 		id: track.id,
-		albumID: album ? album.id : track.album.id,
-		artistID: album ? album.artist.id : track.album.artist.id,
-		artistName: album ? album.artist.name : track.album.artist.name,
+		albumID: album ? album.id : track.album ? track.album.id : null,
+		artistID: album ? album.artist.id : track.album ? track.album.artist.id : null,
+		artistName: album ? album.artist.name : track.album ? track.album.artist.name : null,
 		title: track.title,
 		url: track.url,
-		artwork: album ? album.artwork : track.album.artwork,
+		artwork: album ? album.artwork : track.album ? track.album.artwork : null,
 		liked: likedID.indexOf(track.id) != -1,
 	});
 
