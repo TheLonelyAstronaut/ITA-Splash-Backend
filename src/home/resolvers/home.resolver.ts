@@ -21,6 +21,7 @@ export class HomeResolver {
 			'playlists.tracks.album.artist',
 			'subscriptions',
 			'subscriptions.albums',
+			'subscriptions.albums.artist',
 		]);
 
 		return await this.homeService.getHomepage(user);
