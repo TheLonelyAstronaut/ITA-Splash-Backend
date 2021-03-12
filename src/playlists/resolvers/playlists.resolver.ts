@@ -25,8 +25,9 @@ export class PlaylistsResolver {
 		@CurrentUser() parsedUser: UserGraphQL,
 		@Args('data') data: CreatePlaylistInput
 	): Promise<PlaylistOutput> {
-		const user = await this.usersService.findById(parsedUser.id, ['playlists']);
+		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
 		const playlist = await this.playlistsService.create(user, data);
+
 		const likedID = user.playlists.find((item) => item.liked).tracks.map((track) => track.id);
 
 		return toPlaylistOutput(playlist, likedID);
