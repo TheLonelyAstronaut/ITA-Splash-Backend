@@ -10,6 +10,7 @@ import { AlbumsModule } from '../albums/albums.module';
 import { PlaylistsModule } from '../playlists/playlists.module';
 import { SearchModule } from '../search/search.module';
 import { HomeModule } from '../home/home.module';
+import { NotificationsModule } from '../firebase/notifications/notifications.module';
 
 @Module({
 	imports: [
@@ -42,6 +43,7 @@ import { HomeModule } from '../home/home.module';
 		PlaylistsModule,
 		SearchModule,
 		HomeModule,
+		NotificationsModule,
 	],
 })
 export class AppModule {}

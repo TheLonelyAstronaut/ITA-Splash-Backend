@@ -26,7 +26,7 @@ export class NotificationsService {
 				tokens: data.receivers,
 			})
 			.then((response) => {
-				console.log(response);
+				response.responses.forEach((value) => console.log(value));
 			});
 	}
 }

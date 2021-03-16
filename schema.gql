@@ -70,6 +70,7 @@ type Query {
   getCurrentUser: UserOutput!
   getArtist(data: GetArtistInput!): ArtistOutput!
   getAlbum(data: Float!): AlbumOutput!
+  testNotifications: String!
   getPlaylist(data: Float!): PlaylistOutput!
   findByQuery(data: SearchInput!): SearchOutput!
   getHomepage: [HomepageDataOutput!]!

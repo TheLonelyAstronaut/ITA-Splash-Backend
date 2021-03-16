@@ -58,7 +58,7 @@ export class AlbumsResolver {
 
 		await this.notificationsService.sendNotification({
 			receivers: getFCMTokens(artist),
-			notification: toNotification(artist, album),
+			...toNotification(artist, album),
 		});
 
 		const user = await this.usersService.findById(parsedUser.id, ['playlists', 'playlists.tracks']);
